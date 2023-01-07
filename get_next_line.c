@@ -6,21 +6,26 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:28 by cmenke            #+#    #+#             */
-/*   Updated: 2023/01/06 22:23:33 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/01/07 16:01:43 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void *get_line(char **remainder, char **result)
-{
+// compare the buffer for \0 or \n
 
-}
+// -----------
+//check the remainder
+
+//read till NULL or \n
+
+//check buffer for /n or null
+
+//create the remainder
 
 char	*get_next_line(int fd)
 {
 	static char *remainder;
-	char *result;
 	
 	if (fd == -1)
 		return (NULL);
@@ -35,6 +40,6 @@ int main(void)
 	int fd;
 	
 	fd = open("lines.txt", O_RDONLY);
-	printf("%s\n", get_next_line(fd));
+	printf("%s", get_next_line(fd));
 	close(fd);
 }
