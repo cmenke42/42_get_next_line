@@ -5,115 +5,131 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 21:47:28 by cmenke            #+#    #+#             */
-/*   Updated: 2023/01/11 12:21:15 by cmenke           ###   ########.fr       */
+/*   Created: 2023/01/15 11:52:31 by cmenke            #+#    #+#             */
+/*   Updated: 2023/01/15 16:40:51 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-//read returns -1 if the buffer is not right.
-// compare the buffer for \0 or \n
-
-// -----------
-//check the remainder
-
-//read till NULL or \n
-
-//check buffer for /n or null
-
-//create the remainder
-
-char	*ft_read_line(char **remainder, int fd, int *inf)
+char	*ft_read_line(int fd, int *inf)
 {
 	char	*buffer;
-	char	*temp;
 	int		read_ret;
 
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	read_ret = read(fd, buffer, BUFFER_SIZE);
-	if (!buffer || read_ret == -1)
+	if (buffer == NULL)
 		return (NULL);
-	if (read_ret == 0)
-		*inf = 0;
-	else
+	read_ret = read(fd, buffer, BUFFER_SIZE);
+	if (read_ret == -1)
 	{
-		if (*remainder)
-		{
-			temp = ft_strjoin(*remainder, buffer);
-			free(*remainder);
-		}
-		else
-			temp = ft_strjoin("", buffer);
 		free(buffer);
-		*remainder = temp;
+		return (NULL);
 	}
-	return (*remainder);
+	else if (read_ret == 0)
+		*inf = 0;
+	return (buffer);
 }
 
-char	*ft_check(char **remainder, int fd, int *inf)
+char	*ft_return_line(char **remainder, int *inf, char *spot)
 {
-	char	*spot;
-	char	*result;
+	char	*line;
 	char	*temp;
 
-	result = NULL;
-	spot = NULL;
-	if (*remainder)
-		spot = ft_strchr(*remainder, '\n');
-	if (spot)
-	{
-		result = ft_substr(*remainder, 0, spot - *remainder + *inf);
+	line = NULL;
+	temp = NULL;
+	if (*remainder && *inf == 0)
+		spot = ft_strchr(*remainder, '\0');
+	line = ft_substr(*remainder, 0, spot - *remainder + *inf);
+	if (line != NULL && *inf == 1)
 		temp = ft_strjoin(spot + *inf, "");
+	free(*remainder);
+	*remainder = temp;
+	return (line);
+}
+
+char	*ft_check_remainder(char **remainder, int fd, int *inf)
+{
+	char	*line;
+	char	*temp;
+	char	*spot;
+
+	line = NULL;
+	temp = NULL;
+	spot = NULL;
+	if (*remainder && *inf == 1)
+		spot = ft_strchr(*remainder, '\n');
+	if (!spot && *inf == 1)
+	{
+		line = ft_read_line(fd, inf);
+		if (!line)
+			return (NULL);
+		temp = ft_strjoin(*remainder, line);
+		if (!temp)
+			return (NULL);
 		free(*remainder);
+		free(line);
 		*remainder = temp;
+		line = ft_check_remainder(remainder, fd, inf);
 	}
-	else if (!spot && *inf == 1)
-	{
-		if (ft_read_line(remainder, fd, inf))
-			return (ft_check(remainder, fd, inf));
-		else
-			free(*remainder);
-	}
-	else if (*inf == 0)
-	{
-		result = *remainder;
-		*remainder = NULL;
-	}
-	return (result);
+	else
+		line = ft_return_line(remainder, inf, spot);
+	return (line);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*remainder;
-	char		*result;
+	char		*line;
 	int			inf;
 
 	inf = 1;
-	result = NULL;
+	line = NULL;
 	if (fd == -1)
 		return (NULL);
-	result = ft_check(&remainder, fd, &inf);
-	if (inf == 0 || result == NULL)
+	if (remainder == NULL)
+		remainder = ft_read_line(fd, &inf);
+	if (remainder)
+		line = ft_check_remainder(&remainder, fd, &inf);
+	if (!line)
+	{
+		free(remainder);
 		remainder = NULL;
-	return (result);
+	}
+	return (line);
 }
 
-// #include <stdio.h>
 // #include <sys/types.h>
 // #include <sys/stat.h>
 // #include <fcntl.h>
+// #include <stdio.h>
 // int main(void)
 // {
 // 	int fd;
+// 	char *temp;
 
-// 	fd = open("lines.txt", O_RDONLY);
-// 	printf("%s\n", get_next_line(fd));
-// 	printf("%s\n", get_next_line(fd));
-// 	printf("%s\n", get_next_line(fd));
-// 	printf("%s\n", get_next_line(fd));
-// 	printf("%s\n", get_next_line(fd));
-// 	printf("%s\n", get_next_line(fd));
-// 	printf("%s\n", get_next_line(fd));
+// 	fd = open("../lines.txt", O_RDONLY);
+
+// 	temp = get_next_line(fd);
+// 	printf("%s", temp);
+// 	free(temp);
+// 	temp = get_next_line(fd);
+// 	printf("%s", temp);
+// 	free(temp);
+// 	temp = get_next_line(fd);
+// 	printf("%s", temp);
+// 	free(temp);
+// 	temp = get_next_line(fd);
+// 	printf("%s", temp);
+// 	free(temp);
+// 	temp = get_next_line(fd);
+// 	printf("%s", temp);
+// 	free(temp);
+// 	temp = get_next_line(fd);
+// 	printf("%s", temp);
+// 	free(temp);
+// 	temp = get_next_line(fd);
+// 	printf("%s", temp);
+// 	free(temp);
 // 	close(fd);
 // }
