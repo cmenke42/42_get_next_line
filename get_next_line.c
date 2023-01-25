@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 11:52:31 by cmenke            #+#    #+#             */
-/*   Updated: 2023/01/15 16:58:38 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/01/25 15:13:12 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,38 +103,3 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-
-// #include <sys/types.h>
-// #include <sys/stat.h>
-// #include <fcntl.h>
-// #include <stdio.h>
-// int main(void)
-// {
-// 	int fd;
-// 	char *temp;
-
-// 	fd = open("../lines.txt", O_RDONLY);
-
-// 	temp = get_next_line(fd);
-// 	printf("%s", temp);
-// 	free(temp);
-// 	temp = get_next_line(fd);
-// 	printf("%s", temp);
-// 	free(temp);
-// 	temp = get_next_line(fd);
-// 	printf("%s", temp);
-// 	free(temp);
-// 	temp = get_next_line(fd);
-// 	printf("%s", temp);
-// 	free(temp);
-// 	temp = get_next_line(fd);
-// 	printf("%s", temp);
-// 	free(temp);
-// 	temp = get_next_line(fd);
-// 	printf("%s", temp);
-// 	free(temp);
-// 	temp = get_next_line(fd);
-// 	printf("%s", temp);
-// 	free(temp);
-// 	close(fd);
-// }
