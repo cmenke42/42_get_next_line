@@ -1,36 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils _bonus.c                       :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 16:40:57 by cmenke            #+#    #+#             */
-/*   Updated: 2023/01/15 17:03:22 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/01/26 16:12:44 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-
-//allocates a memory of (count * size) and initialises it with 0.
-//if allocation fails returns null.
-//writes "n" zeroed bytes to the byte string *s.
-//typecast so the system knows how big one byte is.
-void	*ft_calloc(size_t count, size_t size)
-{
-	void			*result;
-	unsigned char	*pointer;
-	size_t			i;
-
-	result = malloc(count * size);
-	if (result == NULL)
-		return (NULL);
-	pointer = (unsigned char *)result;
-	i = 0;
-	while (i < count * size)
-		pointer[i++] = '\0';
-	return (result);
-}
 
 //returns NULL if malloc fails.
 //else returns a new string (s1 + s2).

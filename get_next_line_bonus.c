@@ -6,7 +6,7 @@
 /*   By: cmenke <cmenke@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 11:52:31 by cmenke            #+#    #+#             */
-/*   Updated: 2023/01/25 15:13:22 by cmenke           ###   ########.fr       */
+/*   Updated: 2023/01/27 18:17:23 by cmenke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_read_line(int fd, int *inf)
 	char	*buffer;
 	int		read_ret;
 
-	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
 	read_ret = read(fd, buffer, BUFFER_SIZE);
@@ -29,6 +29,7 @@ char	*ft_read_line(int fd, int *inf)
 	}
 	else if (read_ret == 0)
 		*inf = 0;
+	buffer[read_ret] = '\0';
 	return (buffer);
 }
 
@@ -91,7 +92,7 @@ char	*get_next_line(int fd)
 
 	inf = 1;
 	line = NULL;
-	if (fd == -1)
+	if (fd == -1 || fd > 1024)
 		return (NULL);
 	if (!remainder[fd])
 		remainder[fd] = ft_read_line(fd, &inf);
