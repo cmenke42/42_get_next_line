@@ -92,7 +92,7 @@ char	*get_next_line(int fd)
 
 	inf = 1;
 	line = NULL;
-	if (fd == -1 || fd > 1024)
+	if (fd < 0 || fd > 1023)
 		return (NULL);
 	if (!remainder[fd])
 		remainder[fd] = ft_read_line(fd, &inf);
