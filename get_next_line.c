@@ -91,7 +91,7 @@ char	*get_next_line(int fd)
 
 	inf = 1;
 	line = NULL;
-	if (fd == -1)
+	if (fd < 0)
 		return (NULL);
 	if (!remainder)
 		remainder = ft_read_line(fd, &inf);
